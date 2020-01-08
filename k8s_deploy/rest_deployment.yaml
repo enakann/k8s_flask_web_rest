@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment 
+metadata:
+  name: rest-deployment
+spec:
+  replicas: 1
+  selector:
+     matchLabels:
+       component: rest
+  template:
+    metadata:
+      labels:
+        component: rest 
+    spec:
+      containers:
+         - name: rest-container
+           image: kannan1985/directors_rest_api
+           ports:
+             - containerPort: 5002
+
+      

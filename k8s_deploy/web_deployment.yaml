@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web-deployment
+spec:
+  replicas: 1
+  selector:
+     matchLabels:
+        component: web
+  template:
+     metadata:
+        labels:
+           component: web
+     spec:
+        containers:
+          - name: webcontainer
+            image: kannan1985/directors_web_app
+            ports:
+              - containerPort: 5001
+
+
