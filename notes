@@ -1,0 +1,39 @@
+-rw-rw-r-- 1 spmuser spmuser  710 Jan 11 10:12 service-nodeport.yaml
+-rw-rw-r-- 1 spmuser spmuser 5.4K Jan 11 10:13 metallb.yaml
+-rw-rw-r-- 1 spmuser spmuser 6.5K Dec 30 09:23 mandatory.yaml
+
+
+
+NAME                      TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)    AGE     SELECTOR
+kubernetes                ClusterIP   10.96.0.1       <none>        443/TCP    4d10h   <none>
+redis-server              ClusterIP   10.96.232.49    <none>        6379/TCP   5m14s   component=redis
+rest-cluster-ip-service   ClusterIP   10.96.232.4     <none>        5002/TCP   5m14s   component=rest
+web-cluster-ip-service    ClusterIP   10.96.235.237   <none>        5001/TCP   5m14s   component=web
+
+NAME                                   READY   STATUS             RESTARTS   AGE     IP          NODE              NOMINATED NODE   READINESS GATES
+pod-example                            0/1     CrashLoopBackOff   817        2d21h   10.32.0.3   scspa1785968002   <none>           <none>
+postgres-deployment-57df47d64f-tbsmj   0/1     Pending            0          5m20s   <none>      <none>            <none>           <none>
+redis-deployment-5d896fc9d8-cwc9k      1/1     Running            0          5m20s   10.32.0.4   scspa1785968002   <none>           <none>
+rest-deployment-6c5c6cbb87-kgnks       1/1     Running            0          5m20s   10.32.0.5   scspa1785968002   <none>           <none>
+web-deployment-fc844cfdd-wkrlb         1/1     Running            0          5m20s   10.32.0.6   scspa1785968002   <none>           <none>
+
+
+
+ kubectl apply -f https://raw.githubusercontent.com/google/metallb/v0.8.3/manifests/metallb.yaml
+
+ 1270  kubectl apply -f mandatory.yaml
+ 1271  kubectl apply -f config.yaml
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  namespace: metallb-system
+  name: config
+data:
+  config: |
+    address-pools:
+    - name: default
+      protocol: layer2
+      addresses:
+      - 10.193.113.106
+
